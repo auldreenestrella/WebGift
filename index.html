@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Check-In · Flight Plan</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="sky" aria-hidden="true">
+  <div class="cloud cloud--a"><svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="60" cy="40" rx="60" ry="26"/><ellipse cx="120" cy="30" rx="45" ry="22"/><ellipse cx="150" cy="45" rx="35" ry="18"/></svg></div>
+  <div class="cloud cloud--b"><svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="60" cy="40" rx="55" ry="24"/><ellipse cx="110" cy="32" rx="40" ry="20"/></svg></div>
+  <div class="cloud cloud--c"><svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="70" cy="42" rx="65" ry="28"/><ellipse cx="130" cy="30" rx="48" ry="22"/><ellipse cx="160" cy="48" rx="30" ry="16"/></svg></div>
+  <div class="plane">
+    <div class="contrail"></div>
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 16.5L22 9.5L20 8L11 11L4.5 6.5L2.5 7L7 12.5L2.5 15L3.5 16L2 16.5Z" fill="currentColor"/></svg>
+  </div>
+</div>
+<div class="stage">
+  <p class="eyebrow">Departures &middot; Terminal FA</p>
+
+  <div class="ticket">
+    <div class="ticket-main">
+      <div class="route">
+        <div class="code">OEN<span>&rarr;</span></div>
+        <div class="plane">
+          <div class="line"></div>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M2 16.5L22 9.5L20 8L11 11L4.5 6.5L2.5 7L7 12.5L2.5 15L3.5 16L2 16.5Z" fill="currentColor"/></svg>
+          <div class="line"></div>
+        </div>
+        <div class="code" style="font-size:16px; color:rgba(35,35,29,0.5); letter-spacing:0.1em;">CHECK-IN</div>
+      </div>
+
+      <h1 class="title">Welcome to  <em>Emirates Cabin Crew Portal.</em></h1>
+      <p class="lede">Before boarding, please check in with your full name — exactly as it appears on your travel documents.</p>
+
+      <label class="field-label" for="fullname">Full name</label>
+      <input type="text" id="fullname" placeholder="e.g. Juan Dela Cruz" autocomplete="off">
+      <div class="error-msg" id="err"></div>
+
+      <div class="btn-row">
+        <button class="btn brass" id="checkinBtn">Check In &nbsp;&rarr;</button>
+      </div>
+    </div>
+
+    <div class="tear"></div>
+
+    <div class="stub">
+      <div class="name">Passenger<strong>Awaiting check-in</strong></div>
+      <div class="seat">Gate<strong>DXB-FA01</strong></div>
+    </div>
+  </div>
+
+  <p class="foot-note">Future FA &middot; embrace yourself &middot; achievements</p>
+</div>
+
+<script src="script.js"></script>
+<script>
+  const input = document.getElementById('fullname');
+  const err = document.getElementById('err');
+  const btn = document.getElementById('checkinBtn');
+
+  function normalize(s){
+    return s.trim().toUpperCase().replace(/\s+/g, ' ');
+  }
+
+  function checkIn(){
+    const val = input.value;
+    if(!val.trim()){
+      err.textContent = "Please type your full name to check in.";
+      return;
+    }
+    if(normalize(val) !== FP.ANSWER_NAME){
+      err.textContent = "That name doesn't match our passenger manifest — please type it exactly as your full name.";
+      return;
+    }
+    err.textContent = "";
+    FP.set('fp_fullname', val.trim());
+    FP.set('fp_nickname', FP.NICK);
+    // reset any previous session progress
+    localStorage.removeItem('fp_score');
+    localStorage.removeItem('fp_passed');
+    localStorage.removeItem('fp_essay');
+    localStorage.removeItem('fp_seat');
+    window.location.href = 'quiz.html';
+  }
+
+  btn.addEventListener('click', checkIn);
+  input.addEventListener('keydown', (e) => { if(e.key === 'Enter') checkIn(); });
+</script>
+</body>
+</html>

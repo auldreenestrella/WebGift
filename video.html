@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flight Plan · Arrival — Dubai</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="sky" aria-hidden="true">
+  <div class="cloud cloud--a"><svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="60" cy="40" rx="60" ry="26"/><ellipse cx="120" cy="30" rx="45" ry="22"/><ellipse cx="150" cy="45" rx="35" ry="18"/></svg></div>
+  <div class="cloud cloud--b"><svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="60" cy="40" rx="55" ry="24"/><ellipse cx="110" cy="32" rx="40" ry="20"/></svg></div>
+  <div class="cloud cloud--c"><svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="70" cy="42" rx="65" ry="28"/><ellipse cx="130" cy="30" rx="48" ry="22"/><ellipse cx="160" cy="48" rx="30" ry="16"/></svg></div>
+  <div class="plane">
+    <div class="contrail"></div>
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 16.5L22 9.5L20 8L11 11L4.5 6.5L2.5 7L7 12.5L2.5 15L3.5 16L2 16.5Z" fill="currentColor"/></svg>
+  </div>
+</div>
+
+<div class="stage">
+  <p class="eyebrow">Arrival &middot; Dubai International</p>
+
+  <div class="ticket">
+    <div class="ticket-main">
+      <div class="route">
+        <div class="code">MNL</div>
+        <div class="plane">
+          <div class="line"></div>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M2 16.5L22 9.5L20 8L11 11L4.5 6.5L2.5 7L7 12.5L2.5 15L3.5 16L2 16.5Z" fill="currentColor"/></svg>
+          <div class="line"></div>
+        </div>
+        <div class="code"><span>DXB</span></div>
+      </div>
+
+      <h1 class="title">Life as an FA in <em>Dubai.</em></h1>
+      <p class="lede">One possible future, playing right here. Emirates is one of the biggest employers of Filipino flight attendants in the world — this could be you.</p>
+
+      <!--
+        ============================================================
+        EDIT ME: swap YOUTUBE_VIDEO_ID below for the ID of any YouTube
+        video you'd like — the ID is the part after "v=" in the URL,
+        e.g. https://www.youtube.com/watch?v=os8aBb3MF6M -> os8aBb3MF6M
+
+        A few "not every uploader allows embedding" is the #1 reason a
+        video refuses to connect here — before swapping one in, paste
+        https://www.youtube.com/embed/THEIR_ID directly into a browser
+        tab; if it plays there, it'll play here too.
+        ============================================================
+      -->
+      <div class="video-wrap" id="videoWrap">
+        <iframe
+          id="ytFrame"
+          src="https://www.youtube.com/embed/MQqMS1E0Zuc"
+          title="Life as an Emirates Flight Attendant in Dubai"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      </div>
+
+      <p style="font-family:var(--mono); font-size:11px; color:rgba(35,35,29,0.5); margin-top:14px;">
+        Video won't load? <a id="watchLink" href="https://www.youtube.com/watch?v=MQqMS1E0Zuc" target="_blank" rel="noopener" style="color:var(--rust);">Watch it directly on YouTube instead →</a>
+      </p>
+    </div>
+
+    <div class="tear"></div>
+
+    <div class="stub">
+      <div class="name">Passenger<strong id="stubName">—</strong></div>
+      <div class="seat">Status<strong style="color:#4a7c59;">Arrived</strong></div>
+    </div>
+  </div>
+
+  <p class="foot-note">End of the line — for now ✈️</p>
+</div>
+
+<script src="script.js"></script>
+<script>
+  FP.requireName();
+  document.getElementById('stubName').textContent = FP.get('fp_nickname') || 'Passenger';
+</script>
+</body>
+</html>

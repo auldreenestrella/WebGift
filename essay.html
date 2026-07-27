@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flight Plan · Write Your Future</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="sky" aria-hidden="true">
+  <div class="cloud cloud--a"><svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="60" cy="40" rx="60" ry="26"/><ellipse cx="120" cy="30" rx="45" ry="22"/><ellipse cx="150" cy="45" rx="35" ry="18"/></svg></div>
+  <div class="cloud cloud--b"><svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="60" cy="40" rx="55" ry="24"/><ellipse cx="110" cy="32" rx="40" ry="20"/></svg></div>
+  <div class="cloud cloud--c"><svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="70" cy="42" rx="65" ry="28"/><ellipse cx="130" cy="30" rx="48" ry="22"/><ellipse cx="160" cy="48" rx="30" ry="16"/></svg></div>
+  <div class="plane">
+    <div class="contrail"></div>
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 16.5L22 9.5L20 8L11 11L4.5 6.5L2.5 7L7 12.5L2.5 15L3.5 16L2 16.5Z" fill="currentColor"/></svg>
+  </div>
+</div>
+
+
+
+<div class="stage">
+  <p class="eyebrow">Alternate Route &middot; Personal Statement</p>
+
+  <div class="ticket">
+    <div class="ticket-main">
+      <h1 class="title">Write your plan for the <em>future.</em></h1>
+      <p class="lede">The score doesn't decide your story — this does. Take a moment and write out where you want to go from here: your goals, your timeline, what you're working toward as a tourism student and beyond.</p>
+
+      <label class="field-label" for="essay">Your plan</label>
+      <textarea id="essay" placeholder="In the next few years, I want to..."></textarea>
+      <div class="error-msg" id="err"></div>
+
+      <div class="btn-row">
+        <button class="btn brass" id="submitBtn">Continue to Gate &nbsp;&rarr;</button>
+      </div>
+    </div>
+
+    <div class="tear"></div>
+
+    <div class="stub">
+      <div class="name">Passenger<strong id="stubName">—</strong></div>
+      <div class="seat">Status<strong style="color:var(--rust);">Rerouted</strong></div>
+    </div>
+  </div>
+
+  <p class="foot-note">No word count, no wrong answers — just honesty</p>
+</div>
+
+<script src="script.js"></script>
+<script>
+  FP.requireName();
+  document.getElementById('stubName').textContent = FP.get('fp_nickname') || 'Passenger';
+
+  document.getElementById('submitBtn').addEventListener('click', () => {
+    const val = document.getElementById('essay').value.trim();
+    if(!val){
+      document.getElementById('err').textContent = "Write even a few lines before continuing — this one's for you.";
+      return;
+    }
+    FP.set('fp_essay', val);
+    window.location.href = 'message.html';
+  });
+</script>
+</body>
+</html>

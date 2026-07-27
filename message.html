@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flight Plan · A Message For You</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="sky" aria-hidden="true">
+  <div class="cloud cloud--a"><svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="60" cy="40" rx="60" ry="26"/><ellipse cx="120" cy="30" rx="45" ry="22"/><ellipse cx="150" cy="45" rx="35" ry="18"/></svg></div>
+  <div class="cloud cloud--b"><svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="60" cy="40" rx="55" ry="24"/><ellipse cx="110" cy="32" rx="40" ry="20"/></svg></div>
+  <div class="cloud cloud--c"><svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="70" cy="42" rx="65" ry="28"/><ellipse cx="130" cy="30" rx="48" ry="22"/><ellipse cx="160" cy="48" rx="30" ry="16"/></svg></div>
+  <div class="plane">
+    <div class="contrail"></div>
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 16.5L22 9.5L20 8L11 11L4.5 6.5L2.5 7L7 12.5L2.5 15L3.5 16L2 16.5Z" fill="currentColor"/></svg>
+  </div>
+</div>
+<div class="stage">
+  <p class="eyebrow">Gate FA-01 &middot; Personal Delivery</p>
+
+  <div class="ticket">
+    <div class="ticket-main">
+      <h1 class="title">For <em id="nickHolder">Oenone A.</em></h1>
+
+      <div class="message-body">
+        <p>A wonderful Day to my Future FA,</p>
+        <p>First of all, I want to thank you for everything—for all the effort and everything you have done for me from the start until now. During the times when we often argued, you still chose to understand me. I’m truly grateful that, no matter what conflicts we go through, we always find a way to forgive and understand each other.</p>
+        <p>At the start, things were a bit unclear since everything was still new. However, as time passed, I realized that my future feels different when I’m with you. After college, I want both of us to feel lighter despite whatever problems we may face. I want to help you as much as i can because, if I can’t do that, then I’m not enough to become your husband. That’s why I’m pushing myself to become better, because I want you to be happy in the future.</p>
+        <p>We both know that problems will never disappear, but at least we can lessen the things that weigh you down and face everything together. Please wait and see—once I achieve my goals, I will help you reach yours as well. I’m aiming to grow more as a person so I can support you, because it hurts me to see you struggle, especially when there are things you need for school or in life that you cannot have or accomplish. Let me help you, because it’s what I genuinely want. I can’t stand seeing you have a hard time. My life becomes lighter when yours feels lighter too.</p>
+        <p>As you start your classes, I hope that, if you make new friends, you set limits on going out. I’m not stopping you, but please be careful, because the world is different now, and we never know what dangers might come. Just as I take care of you, I hope you take even better care of yourself.</p>
+        <p>In college, we will go through everything together—both the happy moments and the challenges—and create many memories along the way. I love you, and you already know how much i'm working hard and pushing myself so I can give back to you and provide what I can, because it’s hard for me to see you struggling.</p>
+        <p>For us, I wish good luck in everything that comes our way. I know I’m not yet the best version of myself for you, but I promise I"ll improve and fix myself. When the time comes that we build our life together, I will make sure that you never experience even a single thing you never want to go through. I’m still in the process of fixing myself, which is why things are a bit messy now, but I promise that, once everything is settled, I will make things right.</p>
+        <p>I’m sorry if I can be a bit stubborn sometimes, but you know that everything I do comes from love. Soon, I’ll be able to give you the things you want. I know you’re going through a difficult time right now, and so am I, so I hope you understand.</p>
+        <p>For your future, I wish you the best. I know you’re still unsure whether to pursue becoming a flight attendant or taking education. My love, you don’t have to limit yourself—you can pursue both. Why not try one first, then the other? You’re still young, and there’s so much more for you to explore. There are many places we haven’t been to and experiences we haven’t had yet. Aim for something beyond your expectations, because achieving more will make you even happier. It would be fulfilling to experience both paths.</p>
+        <p>In school, I know there will be challenges, but we will face them together. We will help each other, and I will never leave you. I love you so much.</p>
+        <p>And lastly, happy monthsary. I may be a bit forgetful sometimes because of everything on my mind, but soon, pag kaya na, I promise I will never forget again. Even if I do, I’ll make it up to you—I’ll plan dates and create moments so you won’t have to wait. I’m happy that we’ve come this far, and I’m wishing for more—until the very end.</p>
+        <p>I’m proud of you because you are reaching your dreams. There may be problems along the way, but they help us grow and prepare for the future. Struggles are normal—if you’re not struggling, it means you’re not trying. I love you so much—more than anything. I love you, my future flight attendant.</p>
+        <p class="signoff">— Babi </p>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn brass" id="continueBtn">Continue &nbsp;&rarr;</button>
+      </div>
+    </div>
+
+    <div class="tear"></div>
+
+    <div class="stub">
+      <div class="name">Passenger<strong id="stubName">—</strong></div>
+      <div class="seat">Gate<strong>CXB-FA01</strong></div>
+    </div>
+  </div>
+
+  <p class="foot-note">One more stop before your final destination</p>
+</div>
+
+<script src="script.js"></script>
+<script>
+  FP.requireName();
+  document.getElementById('stubName').textContent = FP.get('fp_nickname') || 'Passenger';
+  document.getElementById('nickHolder').textContent = FP.get('fp_nickname') || 'Oenone A.';
+
+  document.getElementById('continueBtn').addEventListener('click', () => {
+    window.location.href = 'comfort.html';
+  });
+</script>
+</body>
+</html>

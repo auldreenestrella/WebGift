@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flight Plan · You Can Do This</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="sky" aria-hidden="true">
+  <div class="cloud cloud--a"><svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="60" cy="40" rx="60" ry="26"/><ellipse cx="120" cy="30" rx="45" ry="22"/><ellipse cx="150" cy="45" rx="35" ry="18"/></svg></div>
+  <div class="cloud cloud--b"><svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="60" cy="40" rx="55" ry="24"/><ellipse cx="110" cy="32" rx="40" ry="20"/></svg></div>
+  <div class="cloud cloud--c"><svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="70" cy="42" rx="65" ry="28"/><ellipse cx="130" cy="30" rx="48" ry="22"/><ellipse cx="160" cy="48" rx="30" ry="16"/></svg></div>
+  <div class="plane">
+    <div class="contrail"></div>
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 16.5L22 9.5L20 8L11 11L4.5 6.5L2.5 7L7 12.5L2.5 15L3.5 16L2 16.5Z" fill="currentColor"/></svg>
+  </div>
+</div>
+<div class="stage">
+  <p class="eyebrow">Final Approach &middot; A Little Reassurance</p>
+
+  <div class="ticket">
+    <div class="ticket-main">
+      <h1 class="title">About that <em>future</em> of yours.</h1>
+
+      
+      <div class="message-body">
+        <p>Whatever you wrote back there — whether it was the plan you're most sure of, or something you're still figuring out — I believe you can actually do it.</p>
+        <p>Wag na wag mong susukuan ang lahat, pangarap mo, motivation or yung mga bagay na nagbibigay sayo ng pag asa or buhay para gawin at tuparin mga pangarap mo, maraming umaasa na makita ka nila sa isang place kung saan mo matagal na makapunta. Yung mga tao na humahatak sayo pababa, iwan mo sila ron, iangat mo sarili mo okay? maraming tutulong sayo, andito ako hindi kita iiwan </p>
+        <p>Malayo man ako pero lagi mong tatandaan na saan man tayo mapunta, andit yung taong gustong gusto matupd mga pangarap mo at makita kang masaya. Mahal na mahal kita</p>
+        <p class="signoff">Pakita mo kung sino ka!</p>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn brass" id="continueBtn">One Last Stop &nbsp;&rarr;</button>
+      </div>
+    </div>
+
+    <div class="tear"></div>
+
+    <div class="stub">
+      <div class="name">Passenger<strong id="stubName">—</strong></div>
+      <div class="seat">Gate<strong>FA-02</strong></div>
+    </div>
+  </div>
+
+  <p class="foot-note">Almost at your final destination</p>
+</div>
+
+<script src="script.js"></script>
+<script>
+  FP.requireName();
+  document.getElementById('stubName').textContent = FP.get('fp_nickname') || 'Passenger';
+
+  document.getElementById('continueBtn').addEventListener('click', () => {
+    window.location.href = 'video.html';
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boarding Assessment · Flight Plan</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="sky" aria-hidden="true">
+  <div class="cloud cloud--a"><svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="60" cy="40" rx="60" ry="26"/><ellipse cx="120" cy="30" rx="45" ry="22"/><ellipse cx="150" cy="45" rx="35" ry="18"/></svg></div>
+  <div class="cloud cloud--b"><svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="60" cy="40" rx="55" ry="24"/><ellipse cx="110" cy="32" rx="40" ry="20"/></svg></div>
+  <div class="cloud cloud--c"><svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="70" cy="42" rx="65" ry="28"/><ellipse cx="130" cy="30" rx="48" ry="22"/><ellipse cx="160" cy="48" rx="30" ry="16"/></svg></div>
+  <div class="plane">
+    <div class="contrail"></div>
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 16.5L22 9.5L20 8L11 11L4.5 6.5L2.5 7L7 12.5L2.5 15L3.5 16L2 16.5Z" fill="currentColor"/></svg>
+  </div>
+</div>
+<div class="stage">
+  <p class="eyebrow">Security Check &middot; Knowledge Screening</p>
+
+  <div class="ticket">
+    <div class="ticket-main" style="position:relative;">
+      <div class="stamp" id="stamp">PASSED<br>Screening</div>
+
+      <div class="qcounter" id="qcounter">Question 1 of 10</div>
+      <div class="gates" id="gates"></div>
+
+      <h1 class="qtext" id="qtext">Loading question...</h1>
+      <div class="options" id="options"></div>
+
+      <div class="btn-row">
+        <button class="btn brass" id="nextBtn" disabled>Next &nbsp;&rarr;</button>
+      </div>
+    </div>
+
+    <div class="tear"></div>
+
+    <div class="stub">
+      <div class="name">Passenger<strong id="stubName">—</strong></div>
+      <div class="seat">Score<strong id="stubScore">0 / 10</strong></div>
+    </div>
+  </div>
+
+  <p class="foot-note">8 out of 10 correct clears you for boarding</p>
+</div>
+
+<script src="script.js"></script>
+<script>
+  FP.requireName();
+  document.getElementById('stubName').textContent = FP.get('fp_nickname') || 'Passenger';
+
+  let current = 0;
+  let score = 0;
+  let answered = false;
+
+  const gatesEl = document.getElementById('gates');
+  for(let i=0;i<QUIZ.length;i++){
+    const d = document.createElement('div');
+    d.className = 'gate-dot';
+    d.id = 'gate-' + i;
+    gatesEl.appendChild(d);
+  }
+
+  function renderGates(){
+    QUIZ.forEach((_, i) => {
+      const dot = document.getElementById('gate-' + i);
+      dot.className = 'gate-dot' + (i < current ? ' done' : (i === current ? ' current' : ''));
+    });
+  }
+
+  function renderQuestion(){
+    answered = false;
+    const item = QUIZ[current];
+    document.getElementById('qcounter').textContent = `Question ${current+1} of ${QUIZ.length}`;
+    document.getElementById('qtext').textContent = item.q;
+    document.getElementById('nextBtn').disabled = true;
+    document.getElementById('nextBtn').textContent = (current === QUIZ.length -1) ? 'See Result →' : 'Next →';
+    renderGates();
+
+    const opts = document.getElementById('options');
+    opts.innerHTML = '';
+    const letters = ['A','B','C','D'];
+    item.options.forEach((optText, idx) => {
+      const b = document.createElement('button');
+      b.className = 'opt';
+      b.innerHTML = `<span class="letter">${letters[idx]}</span><span>${optText}</span>`;
+      b.addEventListener('click', () => selectOption(idx, b));
+      opts.appendChild(b);
+    });
+  }
+
+  function selectOption(idx, btnEl){
+    if(answered) return;
+    answered = true;
+    const item = QUIZ[current];
+    const allOpts = document.querySelectorAll('.opt');
+    allOpts.forEach(o => o.style.pointerEvents = 'none');
+
+    if(idx === item.correct){
+      score++;
+      btnEl.classList.add('correct');
+    } else {
+      btnEl.classList.add('wrong');
+      allOpts[item.correct].classList.add('correct');
+    }
+    document.getElementById('stubScore').textContent = `${score} / ${QUIZ.length}`;
+    document.getElementById('nextBtn').disabled = false;
+  }
+
+  document.getElementById('nextBtn').addEventListener('click', () => {
+    current++;
+    if(current >= QUIZ.length){
+      finish();
+    } else {
+      renderQuestion();
+    }
+  });
+
+  function finish(){
+    current = QUIZ.length;
+    renderGates();
+    const passed = score >= FP.PASS_MARK;
+    FP.set('fp_score', String(score));
+    FP.set('fp_passed', passed ? 'true' : 'false');
+
+    document.querySelector('.ticket-main').innerHTML = `
+      <div class="stamp show" style="position:static; margin: 0 auto 22px; transform:rotate(-6deg);">
+        ${passed ? 'CLEARED<br>FOR BOARDING' : 'HOLD FOR<br>REVIEW'}
+      </div>
+      <h1 class="title" style="text-align:center;">${passed ? 'You passed, ' + FP.get('fp_nickname') + '! ✈️' : 'Almost there, ' + FP.get('fp_nickname') + '.'}</h1>
+      <p class="lede" style="text-align:center; margin-left:auto; margin-right:auto;">
+        You scored <strong>${score} out of ${QUIZ.length}</strong>.
+        ${passed
+          ? 'That clears the boarding requirement. Head on to your gate — someone has a message waiting for you there.'
+          : ('That is below the boarding minimum of ' + FP.PASS_MARK + '/10 — but this is not the end of your trip. Before you board, write out your plan for the future.')}
+      </p>
+      <div class="btn-row" style="justify-content:center;">
+        <button class="btn brass" id="continueBtn">${passed ? 'Proceed to Gate →' : 'Write My Plan →'}</button>
+      </div>
+    `;
+    document.getElementById('continueBtn').addEventListener('click', () => {
+      window.location.href = passed ? 'message.html' : 'essay.html';
+    });
+  }
+
+  renderQuestion();
+</script>
+</body>
+</html>
