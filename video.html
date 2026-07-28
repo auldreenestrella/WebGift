@@ -38,28 +38,26 @@
 
       <!--
         ============================================================
-        EDIT ME: swap YOUTUBE_VIDEO_ID below for the ID of any YouTube
-        video you'd like — the ID is the part after "v=" in the URL,
-        e.g. https://www.youtube.com/watch?v=os8aBb3MF6M -> os8aBb3MF6M
+        EDIT ME: change YT_ID down in the script block at the bottom
+        of this file to swap the video. The ID is the part after "v="
+        in a YouTube URL, e.g. https://www.youtube.com/watch?v=os8aBb3MF6M -> os8aBb3MF6M
 
-        A few "not every uploader allows embedding" is the #1 reason a
-        video refuses to connect here — before swapping one in, paste
-        https://www.youtube.com/embed/THEIR_ID directly into a browser
-        tab; if it plays there, it'll play here too.
+        This page now shows the video's real thumbnail photo with a
+        play button first (so you never see a blank/broken box) —
+        the actual video only loads once it's clicked.
         ============================================================
       -->
       <div class="video-wrap" id="videoWrap">
-        <iframe
-          id="ytFrame"
-          src="https://www.youtube.com/embed/MQqMS1E0Zuc"
-          title="Life as an Emirates Flight Attendant in Dubai"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen>
-        </iframe>
+        <img id="ytThumb" alt="Video thumbnail" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;">
+        <button id="playBtn" aria-label="Play video" style="position:absolute; inset:0; width:100%; height:100%; border:none; background:rgba(11,41,36,0.28); cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0;">
+          <span style="width:76px; height:76px; border-radius:50%; background:rgba(244,238,221,0.95); display:flex; align-items:center; justify-content:center; box-shadow:0 8px 24px rgba(0,0,0,0.35);">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M8 5.5V18.5L19 12L8 5.5Z" fill="#123A34"/></svg>
+          </span>
+        </button>
       </div>
 
       <p style="font-family:var(--mono); font-size:11px; color:rgba(35,35,29,0.5); margin-top:14px;">
-        Video won't load? <a id="watchLink" href="https://www.youtube.com/watch?v=MQqMS1E0Zuc" target="_blank" rel="noopener" style="color:var(--rust);">Watch it directly on YouTube instead →</a>
+        Video won't play? <a id="watchLink" href="#" target="_blank" rel="noopener" style="color:var(--rust);">Watch it directly on YouTube instead →</a>
       </p>
     </div>
 
@@ -78,6 +76,30 @@
 <script>
   FP.requireName();
   document.getElementById('stubName').textContent = FP.get('fp_nickname') || 'Passenger';
+
+  // ---- EDIT THIS to change the video ----
+  const YT_ID = 'MQqMS1E0Zuc';
+  // ----------------------------------------
+
+  const thumb = document.getElementById('ytThumb');
+  const watchLink = document.getElementById('watchLink');
+  watchLink.href = `https://www.youtube.com/watch?v=${YT_ID}`;
+
+  // Try the high-res thumbnail first; if YouTube doesn't have one for this
+  // video, fall back to the standard-res one, which always exists.
+  thumb.src = `https://img.youtube.com/vi/${YT_ID}/maxresdefault.jpg`;
+  thumb.onerror = () => { thumb.onerror = null; thumb.src = `https://img.youtube.com/vi/${YT_ID}/hqdefault.jpg`; };
+
+  document.getElementById('playBtn').addEventListener('click', () => {
+    const wrap = document.getElementById('videoWrap');
+    wrap.innerHTML = `<iframe
+        src="https://www.youtube.com/embed/${YT_ID}?autoplay=1"
+        title="Life as an Emirates Flight Attendant in Dubai"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>`;
+  });
 </script>
 </body>
 </html>
+
