@@ -1,13 +1,3 @@
-/* ==========================================================================
-   FLIGHT PLAN — shared logic
-   Everything is stored in localStorage so state carries across pages:
-     fp_fullname   -> her typed full name
-     fp_nickname   -> "Oenone A." (derived, used as the FA name-tag)
-     fp_score      -> quiz score (0-10)
-     fp_passed     -> "true" / "false"
-     fp_essay      -> her written future-plan text (if she didn't pass)
-   ========================================================================== */
-
 const FP = {
   ANSWER_NAME: "OENONE ANAVIE A. ABUYEN", // full name she must type, uppercase for comparison
   NICK: "Oenone A.",
