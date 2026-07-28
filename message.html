@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Flight Plan · A Message For You</title>
+<title>Boarding Assessment · Flight Plan</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -17,30 +17,20 @@
   </div>
 </div>
 <div class="stage">
-  <p class="eyebrow">Gate FA-01 &middot; Personal Delivery</p>
+  <p class="eyebrow">Security Check &middot; Knowledge Screening</p>
 
   <div class="ticket">
-    <div class="ticket-main">
-      <h1 class="title">For <em id="nickHolder">Oenone A.</em></h1>
+    <div class="ticket-main" style="position:relative;">
+      <div class="stamp" id="stamp">PASSED<br>Screening</div>
 
-      <div class="message-body">
-        <p>A wonderful Day to my Future FA,</p>
-        <p>First of all, I want to thank you for everything—for all the effort and everything you have done for me from the start until now. During the times when we often argued, you still chose to understand me. I’m truly grateful that, no matter what conflicts we go through, we always find a way to forgive and understand each other.</p>
-        <p>At the start, things were a bit unclear since everything was still new. However, as time passed, I realized that my future feels different when I’m with you. After college, I want both of us to feel lighter despite whatever problems we may face. I want to help you as much as i can because, if I can’t do that, then I’m not enough to become your husband. That’s why I’m pushing myself to become better, because I want you to be happy in the future.</p>
-        <p>We both know that problems will never disappear, but at least we can lessen the things that weigh you down and face everything together. Please wait and see—once I achieve my goals, I will help you reach yours as well. I’m aiming to grow more as a person so I can support you, because it hurts me to see you struggle, especially when there are things you need for school or in life that you cannot have or accomplish. Let me help you, because it’s what I genuinely want. I can’t stand seeing you have a hard time. My life becomes lighter when yours feels lighter too.</p>
-        <p>As you start your classes, I hope that, if you make new friends, you set limits on going out. I’m not stopping you, but please be careful, because the world is different now, and we never know what dangers might come. Just as I take care of you, I hope you take even better care of yourself.</p>
-        <p>In college, we will go through everything together—both the happy moments and the challenges—and create many memories along the way. I love you, and you already know how much i'm working hard and pushing myself so I can give back to you and provide what I can, because it’s hard for me to see you struggling.</p>
-        <p>For us, I wish good luck in everything that comes our way. I know I’m not yet the best version of myself for you, but I promise I"ll improve and fix myself. When the time comes that we build our life together, I will make sure that you never experience even a single thing you never want to go through. I’m still in the process of fixing myself, which is why things are a bit messy now, but I promise that, once everything is settled, I will make things right.</p>
-        <p>I’m sorry if I can be a bit stubborn sometimes, but you know that everything I do comes from love. Soon, I’ll be able to give you the things you want. I know you’re going through a difficult time right now, and so am I, so I hope you understand.</p>
-        <p>For your future, I wish you the best. I know you’re still unsure whether to pursue becoming a flight attendant or taking education. My love, you don’t have to limit yourself—you can pursue both. Why not try one first, then the other? You’re still young, and there’s so much more for you to explore. There are many places we haven’t been to and experiences we haven’t had yet. Aim for something beyond your expectations, because achieving more will make you even happier. It would be fulfilling to experience both paths.</p>
-        <p>In school, I know there will be challenges, but we will face them together. We will help each other, and I will never leave you. I love you so much.</p>
-        <p>And lastly, happy monthsary. I may be a bit forgetful sometimes because of everything on my mind, but soon, pag kaya na, I promise I will never forget again. Even if I do, I’ll make it up to you—I’ll plan dates and create moments so you won’t have to wait. I’m happy that we’ve come this far, and I’m wishing for more—until the very end.</p>
-        <p>I’m proud of you because you are reaching your dreams. There may be problems along the way, but they help us grow and prepare for the future. Struggles are normal—if you’re not struggling, it means you’re not trying. I love you so much—more than anything. I love you, my future flight attendant.</p>
-        <p class="signoff">— Babi </p>
-      </div>
+      <div class="qcounter" id="qcounter">Question 1 of 10</div>
+      <div class="gates" id="gates"></div>
+
+      <h1 class="qtext" id="qtext">Loading question...</h1>
+      <div class="options" id="options"></div>
 
       <div class="btn-row">
-        <button class="btn brass" id="continueBtn">Continue &nbsp;&rarr;</button>
+        <button class="btn brass" id="nextBtn" disabled>Next &nbsp;&rarr;</button>
       </div>
     </div>
 
@@ -48,23 +38,113 @@
 
     <div class="stub">
       <div class="name">Passenger<strong id="stubName">—</strong></div>
-      <div class="seat">Gate<strong>CXB-FA01</strong></div>
+      <div class="seat">Score<strong id="stubScore">0 / 10</strong></div>
     </div>
   </div>
 
-  <p class="foot-note">One more stop before your final destination</p>
+  <p class="foot-note">8 out of 10 correct clears you for boarding</p>
 </div>
 
 <script src="script.js"></script>
 <script>
   FP.requireName();
   document.getElementById('stubName').textContent = FP.get('fp_nickname') || 'Passenger';
-  document.getElementById('nickHolder').textContent = FP.get('fp_nickname') || 'Oenone A.';
 
-  document.getElementById('continueBtn').addEventListener('click', () => {
-    window.location.href = 'comfort.html';
+  let current = 0;
+  let score = 0;
+  let answered = false;
+
+  const gatesEl = document.getElementById('gates');
+  for(let i=0;i<QUIZ.length;i++){
+    const d = document.createElement('div');
+    d.className = 'gate-dot';
+    d.id = 'gate-' + i;
+    gatesEl.appendChild(d);
+  }
+
+  function renderGates(){
+    QUIZ.forEach((_, i) => {
+      const dot = document.getElementById('gate-' + i);
+      dot.className = 'gate-dot' + (i < current ? ' done' : (i === current ? ' current' : ''));
+    });
+  }
+
+  function renderQuestion(){
+    answered = false;
+    const item = QUIZ[current];
+    document.getElementById('qcounter').textContent = `Question ${current+1} of ${QUIZ.length}`;
+    document.getElementById('qtext').textContent = item.q;
+    document.getElementById('nextBtn').disabled = true;
+    document.getElementById('nextBtn').textContent = (current === QUIZ.length -1) ? 'See Result →' : 'Next →';
+    renderGates();
+
+    const opts = document.getElementById('options');
+    opts.innerHTML = '';
+    const letters = ['A','B','C','D'];
+    item.options.forEach((optText, idx) => {
+      const b = document.createElement('button');
+      b.className = 'opt';
+      b.innerHTML = `<span class="letter">${letters[idx]}</span><span>${optText}</span>`;
+      b.addEventListener('click', () => selectOption(idx, b));
+      opts.appendChild(b);
+    });
+  }
+
+  function selectOption(idx, btnEl){
+    if(answered) return;
+    answered = true;
+    const item = QUIZ[current];
+    const allOpts = document.querySelectorAll('.opt');
+    allOpts.forEach(o => o.style.pointerEvents = 'none');
+
+    if(idx === item.correct){
+      score++;
+      btnEl.classList.add('correct');
+    } else {
+      btnEl.classList.add('wrong');
+      allOpts[item.correct].classList.add('correct');
+    }
+    document.getElementById('stubScore').textContent = `${score} / ${QUIZ.length}`;
+    document.getElementById('nextBtn').disabled = false;
+  }
+
+  document.getElementById('nextBtn').addEventListener('click', () => {
+    current++;
+    if(current >= QUIZ.length){
+      finish();
+    } else {
+      renderQuestion();
+    }
   });
+
+  function finish(){
+    current = QUIZ.length;
+    renderGates();
+    const passed = score >= FP.PASS_MARK;
+    FP.set('fp_score', String(score));
+    FP.set('fp_passed', passed ? 'true' : 'false');
+
+    document.querySelector('.ticket-main').innerHTML = `
+      <div class="stamp show" style="position:static; margin: 0 auto 22px; transform:rotate(-6deg);">
+        ${passed ? 'CLEARED<br>FOR BOARDING' : 'HOLD FOR<br>REVIEW'}
+      </div>
+      <h1 class="title" style="text-align:center;">${passed ? 'You passed, ' + FP.get('fp_nickname') + '! ✈️' : 'Almost there, ' + FP.get('fp_nickname') + '.'}</h1>
+      <p class="lede" style="text-align:center; margin-left:auto; margin-right:auto;">
+        You scored <strong>${score} out of ${QUIZ.length}</strong>.
+        ${passed
+          ? 'That clears the boarding requirement. Head on to your gate — someone has a message waiting for you there.'
+          : ('That is below the boarding minimum of ' + FP.PASS_MARK + '/10 — but this is not the end of your trip. Before you board, write out your plan for the future.')}
+      </p>
+      <div class="btn-row" style="justify-content:center;">
+        <button class="btn brass" id="continueBtn">${passed ? 'Proceed to Gate →' : 'Write My Plan →'}</button>
+      </div>
+    `;
+    document.getElementById('continueBtn').addEventListener('click', () => {
+      window.location.href = passed ? 'message.html' : 'essay.html';
+    });
+  }
+
+  renderQuestion();
 </script>
 </body>
 </html>
-
